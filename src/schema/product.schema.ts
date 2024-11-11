@@ -5,13 +5,7 @@ import { Category } from './category.schema';
 import { Brand } from './brand.schema';
 import { Review } from './review.schema';
 import { Inventory } from './inventory.schema';
-import { Price } from './price.schema';
-
-interface Specifications {
-  color: string[] | null;
-  weight: number | null;
-  dimensions: string | null;
-}
+import { Price, Specifications } from '../interface';
 
 export type ProductDocument = HydratedDocument<Product>;
 
@@ -41,7 +35,7 @@ export class Product {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Inventory' })
   inventory: Inventory;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Price' })
+  @Prop({ type: Object })
   price: Price;
 }
 
