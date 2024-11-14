@@ -3,9 +3,10 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './schema/product.schema';
 import { Category } from './schema/category.schema';
-import { Brands, Categories, Colors } from './interface';
+import { Brands, Categories, Colors, Products } from './interface';
 import { Brand } from './schema/brand.schema';
 import { Color } from './schema/color.schema';
+import { ElasticsearchService } from '@nestjs/elasticsearch';
 
 @Injectable()
 export class AppService {
@@ -14,10 +15,20 @@ export class AppService {
     @InjectModel(Brand.name) private brandModel: Model<Brand>,
     @InjectModel(Color.name) private colorModel: Model<Color>,
     @InjectModel(Product.name) private productModel: Model<Product>,
+    private readonly elasticsearchService: ElasticsearchService,
   ) {}
 
   getHello(): string {
     return 'Hello World!';
+  }
+
+  async getProduct(): Promise<Products> {
+    return {
+      flag: true,
+      status: HttpStatus.OK,
+      msg: 'Product fetch successfully!',
+      data: [],
+    };
   }
 
   async getCategory(): Promise<Categories> {
@@ -49,6 +60,20 @@ export class AppService {
 
   async getBrand(): Promise<Brands> {
     const brands = await this.brandModel.find().select({ _id: 0 }).exec();
+    return {
+      flag: true,
+      status: HttpStatus.OK,
+      msg: 'Brands fetch successfully!',
+      data: brands,
+    };
+  }
+
+  async getRankedBrand(): Promise<Brands> {
+    const brands = await this.brandModel
+      .find()
+      .select({ _id: 0 })
+      .where({ rank: { $ne: null } })
+      .exec();
     return {
       flag: true,
       status: HttpStatus.OK,

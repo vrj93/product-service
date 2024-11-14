@@ -10,6 +10,11 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @Get('product')
+  getProduct() {
+    return this.appService.getProduct();
+  }
+
   @Get('categories')
   async category(@Query('ranked') ranked?: boolean) {
     return ranked
@@ -18,8 +23,10 @@ export class AppController {
   }
 
   @Get('brands')
-  async brand() {
-    return this.appService.getBrand();
+  async brand(@Query('ranked') ranked?: boolean) {
+    return ranked
+      ? this.appService.getRankedBrand()
+      : this.appService.getBrand();
   }
 
   @Get('colors')

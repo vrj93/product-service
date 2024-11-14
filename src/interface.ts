@@ -1,6 +1,14 @@
 import { CategoryDocument } from './schema/category.schema';
 import { BrandDocument } from './schema/brand.schema';
 import { ColorDocument } from './schema/color.schema';
+import { ProductDocument } from './schema/product.schema';
+
+export interface Products {
+  flag: boolean;
+  status: number;
+  msg: string;
+  data: ProductDocument[];
+}
 
 export interface Categories {
   flag: boolean;
