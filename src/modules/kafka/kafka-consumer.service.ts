@@ -1,6 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Kafka, Consumer } from 'kafkajs';
-import { ElasticsearchSyncService } from '../elasticsearch/elasticsearch.service';
 
 @Injectable()
 export class KafkaConsumerService implements OnModuleInit {
@@ -8,13 +7,13 @@ export class KafkaConsumerService implements OnModuleInit {
   private consumer: Consumer;
 
   constructor(
-    private readonly elasticsearchSyncService: ElasticsearchSyncService,
+    
   ) {}
 
   async onModuleInit() {
     this.kafka = new Kafka({
       clientId: 'product-service',
-      brokers: ['kafka:29092'],
+      brokers: ['192.168.0.101:9092'],
     });
     this.consumer = this.kafka.consumer({ groupId: 'product-group' });
     await this.connectConsumer();
@@ -22,7 +21,7 @@ export class KafkaConsumerService implements OnModuleInit {
 
   async connectConsumer() {
     await this.consumer.connect();
-    await this.consumer.subscribe({
+    /* await this.consumer.subscribe({
       topic: 'product_changes',
       fromBeginning: true,
     });
@@ -35,9 +34,9 @@ export class KafkaConsumerService implements OnModuleInit {
 
         try {
           if (operationType === 'insert' || operationType === 'update') {
-            await this.elasticsearchSyncService.indexProduct(fullDocument);
+          
           } else if (operationType === 'delete') {
-            await this.elasticsearchSyncService.deleteProduct(documentKey._id);
+           
           }
         } catch (error) {
           console.error('Failed to process message:', error);
@@ -46,7 +45,7 @@ export class KafkaConsumerService implements OnModuleInit {
     });
     console.log(
       'Kafka Consumer connected and listening to topic "product_changes"',
-    );
+    ); */
   }
 
   async disconnectConsumer() {

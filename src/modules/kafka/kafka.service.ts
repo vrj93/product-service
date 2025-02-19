@@ -16,7 +16,7 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
   async onModuleInit() {
     this.kafka = new Kafka({
       clientId: 'product-service',
-      brokers: ['kafka:29092'],
+      brokers: ['192.168.0.101:9092'],
     });
     this.producer = this.kafka.producer();
     await this.producer.connect();

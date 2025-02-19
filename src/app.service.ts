@@ -6,7 +6,6 @@ import { Category } from './schema/category.schema';
 import { Brands, Categories, Colors, Products } from './interface';
 import { Brand } from './schema/brand.schema';
 import { Color } from './schema/color.schema';
-import { ElasticsearchService } from '@nestjs/elasticsearch';
 
 @Injectable()
 export class AppService {
@@ -15,7 +14,6 @@ export class AppService {
     @InjectModel(Brand.name) private brandModel: Model<Brand>,
     @InjectModel(Color.name) private colorModel: Model<Color>,
     @InjectModel(Product.name) private productModel: Model<Product>,
-    private readonly elasticsearchService: ElasticsearchService,
   ) {}
 
   getHello(): string {
