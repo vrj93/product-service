@@ -10,7 +10,7 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('product')
+  @Get('products')
   getProduct() {
     return this.appService.getProduct();
   }

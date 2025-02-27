@@ -11,8 +11,11 @@ export class Review {
   @Prop()
   rating: number;
 
-  @Prop()
-  comment: string;
+  @Prop({ type: Object, required: false })
+  feedback: {
+    title: string;
+    comment: string;
+  };;
 }
 
 export const ReviewSchema = SchemaFactory.createForClass(Review);

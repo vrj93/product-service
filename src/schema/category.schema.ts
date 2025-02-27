@@ -8,7 +8,7 @@ export class Category {
   @Prop()
   name: string;
 
-  @Prop()
+  @Prop({ required: true, unique: true, index: true })
   slug: string;
 
   @Prop()
