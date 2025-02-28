@@ -21,7 +21,7 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
     this.producer = this.kafka.producer();
     await this.producer.connect();
     const changeProduct = this.productModel.watch([
-      { $match: { operationType: ['insert', 'update', 'delete'] } },
+      { $match: { operationType: { $in: ['insert', 'update', 'delete'] } } },
     ]);
 
     changeProduct.on('change', async (change) => {
