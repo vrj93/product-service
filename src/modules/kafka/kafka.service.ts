@@ -3,6 +3,7 @@ import { Kafka, Producer } from 'kafkajs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from '../../schema/product.schema';
 import { Model } from 'mongoose';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class KafkaService implements OnModuleInit, OnModuleDestroy {
@@ -10,13 +11,14 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
   private producer: Producer;
 
   constructor(
+    private readonly configService: ConfigService,
     @InjectModel(Product.name) private productModel: Model<Product>,
   ) {}
 
   async onModuleInit() {
     this.kafka = new Kafka({
       clientId: 'product-service',
-      brokers: [process.env.kafkaConnect],
+      brokers: [this.configService.get<string>('kafkaConnect')],
     });
     this.producer = this.kafka.producer();
     await this.producer.connect();

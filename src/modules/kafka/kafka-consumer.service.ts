@@ -1,4 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Kafka, Consumer } from 'kafkajs';
 
 @Injectable()
@@ -6,14 +7,12 @@ export class KafkaConsumerService implements OnModuleInit {
   private kafka: Kafka;
   private consumer: Consumer;
 
-  constructor(
-    
-  ) {}
+  constructor(private readonly configService: ConfigService) {}
 
   async onModuleInit() {
     this.kafka = new Kafka({
       clientId: 'product-service',
-      brokers: [process.env.kafkaConnect],
+      brokers: [this.configService.get<string>('kafkaConnect')],
     });
     this.consumer = this.kafka.consumer({ groupId: 'product-group' });
     await this.connectConsumer();
