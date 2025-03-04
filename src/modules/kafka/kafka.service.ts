@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Product } from '../../schema/product.schema';
 import { Model } from 'mongoose';
 import { ConfigService } from '@nestjs/config';
+import { InventoryService } from '../inventory/inventory.service';
 
 @Injectable()
 export class KafkaService implements OnModuleInit, OnModuleDestroy {
@@ -12,6 +13,7 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
 
   constructor(
     private readonly configService: ConfigService,
+    private readonly inventoryService: InventoryService,
     @InjectModel(Product.name) private productModel: Model<Product>,
   ) {}
 
@@ -27,7 +29,8 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
     ]);
 
     changeProduct.on('change', async (change) => {
-      await this.publish('product_changes', change);
+      const transformChange = await this.inventoryService.transformProductElastic(change);
+      await this.publish('product_changes', transformChange);
     });
     console.log('Kafka Producer connected');
   }

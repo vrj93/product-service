@@ -1,4 +1,4 @@
-import { Price, Specifications } from "../interface";
+import { Price, Specifications } from '../interface';
 
 export class ProductDTO {
   name: string;

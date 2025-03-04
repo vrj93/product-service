@@ -33,7 +33,7 @@ export interface Colors {
 
 export interface Specifications {
   color: string[] | null;
-  weight: number | null;
+  weight: string | null;
   dimensions: string | null;
 }
 
