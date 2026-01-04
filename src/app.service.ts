@@ -46,7 +46,7 @@ export class AppService {
     const categories = await this.categoryModel
       .find()
       .select({ _id: 0 })
-      .where({ rank: { $ne: null } })
+      .where({ rank: { $ne: 0 } })
       .exec();
     return {
       flag: true,
